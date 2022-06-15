@@ -42,8 +42,10 @@ public class ScannerDriver {
 		 *  this menu should repeat until the user decides to exit
 		 */
 		int number;
-		String s;
-		System.out.println("Please enter 1 or 2, enter 3 to exit: ");
+		System.out.println("Please select an option from the menu:");
+		System.out.println("1: Generate a random number between 1 and 100.");
+		System.out.println("2: Reverse a word of your choice.");
+		System.out.println("3: Exit the program.");
 		number = scan.nextInt();
 		switch(number) {
 		case 1:
@@ -52,7 +54,7 @@ public class ScannerDriver {
 			break;
 		case 2:
 			System.out.println("Please enter a string to reverse: ");
-			s = scan.nextLine();
+			String s = scan.next();
 			StringBuffer rev = new StringBuffer(s);
 			System.out.println("Reverse string: " + rev.reverse());
 			break;
