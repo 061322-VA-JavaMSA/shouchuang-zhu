@@ -1,5 +1,5 @@
 package calc;
-
+import java.util.stream.*;
 import calc.exceptions.DivideBy0Exception;
 import calc.exceptions.Number13Exception;
 
@@ -13,11 +13,12 @@ public class simplecalc {
 	}
 	
 	public int subtract(int a, int b) {
-		return 0;
+		return a - b;
 	}
 	
 	public int sumOfAnArray(int[] intArr) {
-		return 0;
+		int sum = IntStream.of(intArr).sum();
+		return sum;
 	}
 	
 	public int div(int a, int b) {

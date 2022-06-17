@@ -57,8 +57,21 @@ private static simplecalc sut;
 		int actual = sut.div(5, 1);
 		assertNotEquals(expected, actual);
 	}
+	@Test
+	public void shouldBeFive() {
+		int expected = 5;
+		int actual = sut.subtract(10, 5);
+		assertEquals(expected, actual);
+	}
 	
 	
+	@Test
+	public void shouldbeTen() {
+		int expected = 10;
+		int[] arr = {1, 2, 3, 4};
+		int actual = sut.sumOfAnArray(arr);
+		assertEquals(expected, actual);
+	}
 	@Test
 	public void addEightAndFive() {
 		assertThrows(Number13Exception.class, () -> sut.add(8, 5));
