@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
@@ -50,6 +51,12 @@ private static simplecalc sut;
 		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void shouldNotBeZero() {
+		int expected = 0;
+		int actual = sut.div(5, 0);
+		assertNotEquals(expected, actual);
+	}
 	
 	
 	@Test
