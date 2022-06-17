@@ -54,7 +54,7 @@ private static simplecalc sut;
 	@Test
 	public void shouldNotBeZero() {
 		int expected = 0;
-		int actual = sut.div(5, 0);
+		int actual = sut.div(5, 1);
 		assertNotEquals(expected, actual);
 	}
 	
