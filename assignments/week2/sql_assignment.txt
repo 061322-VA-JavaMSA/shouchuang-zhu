@@ -3,8 +3,7 @@ CREATE TABLE Salestaff (
 	Salesperson varchar(50),
 	Age int,
 	DOB date,
-	Office_id int REFERENCE Salesoffice(OfficeID),
-	Customer_id int REFERENCE Customer(CustomerID)
+	Office_id int REFERENCE Salesoffice(OfficeID)
 );
 
 CREATE TABLE Salesoffice (
@@ -18,3 +17,9 @@ CREATE TABLE Customer (
 	CustomerID serial PRIMARY KEY,
 	Name int,
 );
+
+CREATE TABLE Staff_Cuctomer (
+	Employee_id int REFERENCE Salestaff(EmployeeID),
+	Customer_id int REFERENCE Custoemr(CustomerID),
+	Emp_Cus_id PRIMARY KEY (Employee_id, Customer_id)
+)
