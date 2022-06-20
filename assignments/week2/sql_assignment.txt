@@ -1,0 +1,20 @@
+CREATE TABLE Salestaff (
+	EmployeeID serial PRIMARY KEY,
+	Salesperson varchar(50),
+	Age int,
+	DOB date,
+	Office_id int REFERENCE Salesoffice(OfficeID),
+	Customer_id int REFERENCE Customer(CustomerID)
+);
+
+CREATE TABLE Salesoffice (
+	OfficeID serial PRIMARY KEY,
+	Street varchar(50),
+	State varchar(50),
+	Zipcode int,
+);
+
+CREATE TABLE Customer (
+	CustomerID serial PRIMARY KEY,
+	Name int,
+);
