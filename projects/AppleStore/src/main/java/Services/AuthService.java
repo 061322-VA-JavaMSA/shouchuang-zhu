@@ -24,6 +24,12 @@ private UserDao ud = new UserPostgres();
 			throw new LoginException();
 		}
 		return u;
+	};
+	
+	public boolean checkAdmin(String username) throws IOException {
+		User u = ud.retriveUserByUsername(username);
+		return u.getAdmin();
+		
 	}
 
 }

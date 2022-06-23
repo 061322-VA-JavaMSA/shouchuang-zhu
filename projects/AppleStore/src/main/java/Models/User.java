@@ -4,7 +4,7 @@ public class User {
 	private int id;
 	private String username;
 	private String password;
-	
+	private boolean isAdmin;
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -32,6 +32,15 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+		
+	}
+	
+	public boolean getAdmin() {
+		return isAdmin;
 	}
 
 }
