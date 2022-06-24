@@ -14,5 +14,4 @@ private UserDao ud = new UserPostgres();
 		return ud.createUser(u);
 	}
 	
-	
 }

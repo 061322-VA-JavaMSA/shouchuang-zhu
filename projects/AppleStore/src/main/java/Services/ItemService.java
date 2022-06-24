@@ -19,5 +19,11 @@ public class ItemService {
 		return id.createItem(i);
 		
 	}
-
+	public boolean deleteItem(int i) throws IOException {
+		return id.deleteItemByid(i);
+	}
+	
+	public Item makeOffer(Item i) throws IOException {
+		return id.makeAnOffer(i);
+	}
 }

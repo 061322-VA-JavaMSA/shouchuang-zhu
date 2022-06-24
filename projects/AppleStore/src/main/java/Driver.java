@@ -5,9 +5,11 @@ import java.util.Scanner;
 
 import Exception.LoginException;
 import Models.Item;
+import Models.Offer;
 import Models.User;
 import Services.AuthService;
 import Services.ItemService;
+import Services.OfferService;
 import Services.UserService;
 
 public class Driver {
@@ -15,14 +17,17 @@ public class Driver {
 	static AuthService as;
 	static UserService us;
 	static ItemService is;
+	static OfferService os;
+	static String username = null;
+	static String password = null;
+	static int user_id;
 	public static void main(String[] args) throws LoginException, IOException, SQLException {
 		scan = new Scanner(System.in);
 		as = new AuthService();
 		us = new UserService();
 		is = new ItemService();
+		os = new OfferService();
 		
-		String username = null;
-		String password = null;
 		
 		//start of the program
 		System.out.println("Enter 1 to signup and enter 2 to login");
@@ -50,13 +55,23 @@ public class Driver {
 					 System.exit(0);
 			
 		}
+		
+		//login page
+		loginPage(username, password);
+		
+		scan.close();
+	}
+	
+	public static void loginPage(String username, String password) throws IOException, SQLException {
 		try {
 			//login method
 			as.login(username, password);
+			
 		} catch (LoginException e) {
 			System.out.println("Invalid credentials.");
 			System.exit(0);
 		}
+		user_id = as.checkid(username);
 		//check if logged in user is admin or not
 		if(as.checkAdmin(username) == false) {
 			//methods for customer
@@ -67,59 +82,111 @@ public class Driver {
 			//methods for admin
 			adminMenu();
 		}
-		
-		
-		
-		scan.close();
 	}
-	
+	//Customer menu
 	public static void menu( ) throws SQLException, IOException {
 		System.out.println("Enter the Customer Page");
 		System.out.println("Enter 1 to check item list");
+		System.out.println("Enter 2 to purchase item");
+		System.out.println("Enter 3 to make an offer");
 		switch(scan.nextInt()) {
 		case 1: 
-				List<Item> items = is.getItems();
-				for(Item i: items) {
-					System.out.println(i);
-				}
+				listItem();
 				menu();
 				break;
+		case 2: 
+		case 3: makeOffer();
 		default: 
 				menu();
 				break;
 	}
 	}
 	
-	public static void adminMenu() throws SQLException, IOException {
-		String itemname;
+	public static void listItem() throws SQLException, IOException {
+		List<Item> items = is.getItems();
+		for(Item i: items) {
+			System.out.println(i);
+		}
+	}
+	public static void makeOffer() throws IOException, SQLException {
+		int itemid;
 		int price;
+		Item i = new Item();
+	
+		listItem();
+		System.out.println("Please enter item id that you want to make offer");
+		itemid = scan.nextInt();
+		System.out.println("Please enter the price");
+		price = scan.nextInt();
+		i.setId(itemid);
+		i.setOffer(price);
+		i.setUserId(user_id);
+		//System.out.println(u.getId());
+		is.makeOffer(i);
+		System.out.println("Offer has been made!");
+		
+	}
+	
+	
+	//admin menu
+	public static void adminMenu() throws  IOException, SQLException {
+		
 		System.out.println("Enter the Admin Page");
 		System.out.println("Enter 1 to remove item from list");
 		System.out.println("Enter 2 to add item");
+		System.out.println("Enter 3 to check offers");
 		switch(scan.nextInt()) {
 		case 1: 
-				List<Item> items = is.getItems();
-				for(Item i: items) {
-					System.out.println(i);
-				}
+				deleteItem();
 				adminMenu();
 				break;
-		case 2: System.out.println("Enter the itemname: ");
-				itemname = scan.next();
-				System.out.println("Enter the item price: ");
-				price = scan.nextInt();
-				Item addItem = new Item();
-				addItem.setItemname(itemname);
-				addItem.setPrice(price);
-				System.out.println(is.createItem(addItem));
-				System.out.println("item has been successfully added");
+		case 2: 
+				addItem();
 				adminMenu();
 				break;
-				
+		case 3: checkOffers();
+				break;
 		default: 
-				
 				adminMenu();
 				break;
 	}
+	};
+
+	
+
+	public static void addItem() throws IOException {
+		String itemname;
+		int price;
+		System.out.println("Enter the itemname: ");
+		itemname = scan.next();
+		System.out.println("Enter the item price: ");
+		price = scan.nextInt();
+		Item addItem = new Item();
+		addItem.setItemname(itemname);
+		addItem.setPrice(price);
+		System.out.println(is.createItem(addItem));
+		System.out.println("item has been successfully added");
 	}
+	
+	public static void deleteItem() {
+		try {
+			listItem();
+			System.out.println("Enter the item id to delete: ");
+			is.deleteItem(scan.nextInt());
+			System.out.println("item has been successfully deleted");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void checkOffers() throws SQLException, IOException {
+		List<Offer> offers = os.getOffers();
+		for(Offer o: offers) {
+			System.out.println(o);
+		}
+		
+	}
+	
 };

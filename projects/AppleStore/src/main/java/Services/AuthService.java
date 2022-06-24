@@ -31,5 +31,9 @@ private UserDao ud = new UserPostgres();
 		return u.getAdmin();
 		
 	}
-
+	
+	public int checkid(String username) throws IOException {
+		User u = ud.retriveUserByUsername(username);
+		return u.getId();
+	}
 }

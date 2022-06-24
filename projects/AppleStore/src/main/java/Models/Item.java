@@ -4,6 +4,8 @@ public class Item {
 	int itemId;
 	String itemName;
 	int price;
+	int offer;
+	int userId;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -37,6 +39,22 @@ public class Item {
 	}
 	
 	public String toString() {
-		return "Item [itemname=" + itemName + ", price=" + price + "]";
+		return "item [id=" + itemId + ", itemname=" + itemName + ", price=" + price + "]";
+	}
+
+	public int getOffer() {
+		// TODO Auto-generated method stub
+		return offer;
+	}
+	public void setOffer(int offer) {
+		this.offer = offer;
+	}
+	
+	public void setUserId (int userId) {
+		this.userId = userId;
+	}
+	
+	public int getUserId () {
+		return userId;
 	}
 }
