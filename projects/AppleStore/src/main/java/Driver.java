@@ -6,11 +6,13 @@ import java.util.Scanner;
 import Exception.LoginException;
 import Models.Item;
 import Models.Offer;
+import Models.Payment;
 import Models.User;
 import Services.AuthService;
 import Services.ItemService;
 import Services.OfferService;
 import Services.UserService;
+import Services.PaymentService;
 
 public class Driver {
 	static Scanner scan;
@@ -18,6 +20,8 @@ public class Driver {
 	static UserService us;
 	static ItemService is;
 	static OfferService os;
+	static PaymentService ps;
+	
 	static String username = null;
 	static String password = null;
 	static int user_id;
@@ -27,7 +31,7 @@ public class Driver {
 		us = new UserService();
 		is = new ItemService();
 		os = new OfferService();
-		
+		ps = new PaymentService();
 		
 		//start of the program
 		System.out.println("Enter 1 to signup and enter 2 to login");
@@ -193,9 +197,26 @@ public class Driver {
 		System.out.println("Enter the 1 to accept offer and 0 to deny offer");
 		status = scan.nextInt();
 		Offer of = new Offer();
+		
 		of.setOfferId(offerId);
 		of.setStatus(status);
 		os.ChangeOfferStatus(of);
+		
+		if(status == 1) {
+			directToPayment(offerId);
+		}
+		
+	}
+	
+	public static void directToPayment(int offerId) throws SQLException, IOException {
+		Offer offer = new Offer();
+		offer = os.retrieveOfferById(offerId);
+		Payment pm = new Payment();
+		pm.setItemId(offer.getItemId());
+		pm.setUserId(offer.getUserId());
+		pm.setOffer(offer.getPrice());
+		System.out.println(pm);
+		ps.createPayment(pm);
 	}
 	
 };

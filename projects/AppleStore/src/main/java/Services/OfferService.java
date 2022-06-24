@@ -18,4 +18,8 @@ public class OfferService {
 		return od.updateOffer(o);
 		
 	}
+	
+	public Offer retrieveOfferById(int offerid) throws SQLException, IOException {
+		return od.retrieveOffersById(offerid);
+	}
 }

@@ -29,6 +29,7 @@ public class OfferPostgres implements OfferDao {
 				o.setItemID(rs.getInt("item_id"));
 				o.setUserId(rs.getInt("user_id"));
 				o.setPrice(rs.getInt("offer"));
+				o.setStatus(rs.getInt("status"));
 				offers.add(o);
 			}
 			
@@ -36,6 +37,29 @@ public class OfferPostgres implements OfferDao {
 			e.printStackTrace();
 		}
 		return offers;
+	}
+	
+	public Offer retrieveOffersById(int id) throws SQLException, IOException {
+		// TODO Auto-generated method stub
+		String sql = "select * from offers;";
+	
+		Offer o = null;
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			Statement s = c.createStatement();
+			ResultSet rs = s.executeQuery(sql);
+			while(rs.next()) {
+				o = new Offer();
+				o.setOfferId(rs.getInt("offer_id"));
+				o.setItemID(rs.getInt("item_id"));
+				o.setUserId(rs.getInt("user_id"));
+				o.setPrice(rs.getInt("offer"));
+				o.setStatus(rs.getInt("status"));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return o;
 	}
 
 	@Override
