@@ -52,4 +52,12 @@ public class Offer {
 	public String toString() {
 		return "offer [offerId=" + offerId + ",itemId=" + itemId + ", userId=" + userId + ", price=" + price + "]";
 	}
+	
+	public int getStatus() {
+		return status;
+	}
+	
+	public void setStatus(int status) {
+		this.status = status;
+	}
 }

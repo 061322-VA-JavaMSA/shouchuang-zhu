@@ -8,4 +8,5 @@ import Models.Offer;
 
 public interface OfferDao {
 	List<Offer> retrieveOffers() throws SQLException, IOException;
+	boolean updateOffer(Offer o) throws SQLException, IOException;
 }

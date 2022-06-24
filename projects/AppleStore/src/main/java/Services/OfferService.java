@@ -13,5 +13,9 @@ public class OfferService {
 	public List<Offer> getOffers() throws SQLException, IOException {
 		return od.retrieveOffers();
 	}
-
+	
+	public boolean ChangeOfferStatus(Offer o) throws SQLException, IOException {
+		return od.updateOffer(o);
+		
+	}
 }

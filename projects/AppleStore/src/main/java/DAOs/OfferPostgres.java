@@ -2,6 +2,7 @@ package DAOs;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -36,5 +37,32 @@ public class OfferPostgres implements OfferDao {
 		}
 		return offers;
 	}
+
+	@Override
+	public boolean updateOffer(Offer o) throws SQLException, IOException {
+		String sql = "update offers set status = ? where offer_id = ?";
+		int rowsChanged = -1;
+		
+		
+		try(Connection c = ConnectionUtil.getConnectionFromFile()){
+			PreparedStatement ps = c.prepareStatement(sql);
+			
+			ps.setInt(1, o.getStatus());
+			ps.setInt(2, o.getOfferId());
+			rowsChanged = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(rowsChanged < 1) {
+			return false;
+		} else {
+			System.out.println("status is successfully changed");
+		}
+		return true;
+	}
+	
+	
 
 }

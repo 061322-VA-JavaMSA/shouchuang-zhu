@@ -182,11 +182,20 @@ public class Driver {
 	}
 	
 	private static void checkOffers() throws SQLException, IOException {
+		int offerId;
+		int status;
 		List<Offer> offers = os.getOffers();
 		for(Offer o: offers) {
 			System.out.println(o);
 		}
-		
+		System.out.println("Enter the offer_id to accept/deny offer");
+		offerId = scan.nextInt();
+		System.out.println("Enter the 1 to accept offer and 0 to deny offer");
+		status = scan.nextInt();
+		Offer of = new Offer();
+		of.setOfferId(offerId);
+		of.setStatus(status);
+		os.ChangeOfferStatus(of);
 	}
 	
 };
