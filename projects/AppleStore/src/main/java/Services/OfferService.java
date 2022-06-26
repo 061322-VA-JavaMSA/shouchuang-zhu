@@ -22,4 +22,8 @@ public class OfferService {
 	public Offer retrieveOfferById(int offerid) throws SQLException, IOException {
 		return od.retrieveOffersById(offerid);
 	}
+	
+	public boolean rejectPendingOffers(int itemId) throws IOException {
+		return od.rejectPendingOffer(itemId);
+	}
 }

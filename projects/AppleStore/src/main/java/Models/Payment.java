@@ -38,6 +38,6 @@ public class Payment {
 	}
 	
 	public String toString() {
-		return "payment [paymentId=" + paymentId + ",userId=" + userId + ", itemId=" + itemId + ", offer=" + offer + "]";
+		return "payment [paymentId=" + paymentId + ",userId=" + userId + ", itemId=" + itemId + ", payment=" + payment + ", offer=" + offer + "]";
 	}
 }

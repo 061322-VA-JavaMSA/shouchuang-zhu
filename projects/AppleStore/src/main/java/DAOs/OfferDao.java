@@ -10,4 +10,5 @@ public interface OfferDao {
 	List<Offer> retrieveOffers() throws SQLException, IOException;
 	boolean updateOffer(Offer o) throws SQLException, IOException;
 	Offer retrieveOffersById(int id) throws SQLException, IOException;
+	boolean rejectPendingOffer(int itemId) throws IOException;
 }

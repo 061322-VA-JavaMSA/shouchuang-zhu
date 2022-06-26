@@ -5,7 +5,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
+import Models.Item;
 import Models.Payment;
 import Util.ConnectionUtil;
 
@@ -28,5 +32,29 @@ public class PaymentPostgres implements PaymentDao {
 			e.printStackTrace();
 		}
 		return p;
+	}
+	
+	public List<Payment> retrivePaymentByUserId(int userId) throws IOException{
+		String sql = "select * from payments where user_id = ?;";
+		List<Payment> payments = new ArrayList<Payment>();
+		
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, userId);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Payment p = new Payment();
+				p.setPayment(rs.getInt("payment_id"));
+				p.setItemId(rs.getInt("item_id"));
+				p.setOffer(rs.getInt("offer"));
+				p.setPayment(rs.getInt("payment"));
+				payments.add(p);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return payments;
 	}
 }

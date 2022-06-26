@@ -93,6 +93,7 @@ public class Driver {
 		System.out.println("Enter 1 to check item list");
 		System.out.println("Enter 2 to purchase item");
 		System.out.println("Enter 3 to make an offer");
+		System.out.println("Enter 4 to check offer status");
 		switch(scan.nextInt()) {
 		case 1: 
 				listItem();
@@ -100,6 +101,9 @@ public class Driver {
 				break;
 		case 2: 
 		case 3: makeOffer();
+				break;
+		case 4: checkAcceptOffer();
+				break;
 		default: 
 				menu();
 				break;
@@ -130,7 +134,13 @@ public class Driver {
 		System.out.println("Offer has been made!");
 		
 	}
-	
+	public static void checkAcceptOffer() throws IOException {
+		List<Payment> payments = ps.checkPaymentInfo(user_id);
+		for(Payment p : payments) {
+			System.out.println(p);
+		}
+		
+	}
 	
 	//admin menu
 	public static void adminMenu() throws  IOException, SQLException {
@@ -148,7 +158,8 @@ public class Driver {
 				addItem();
 				adminMenu();
 				break;
-		case 3: checkOffers();
+		case 3: 
+				checkOffers();
 				break;
 		default: 
 				adminMenu();
@@ -185,16 +196,18 @@ public class Driver {
 		}
 	}
 	
+	//accept or reject offers
 	private static void checkOffers() throws SQLException, IOException {
 		int offerId;
 		int status;
+		int itemId;
 		List<Offer> offers = os.getOffers();
 		for(Offer o: offers) {
 			System.out.println(o);
 		}
-		System.out.println("Enter the offer_id to accept/deny offer");
+		System.out.println("Enter the offer_id to accept/reject offer");
 		offerId = scan.nextInt();
-		System.out.println("Enter the 1 to accept offer and 0 to deny offer");
+		System.out.println("Enter the 1 to accept offer and 0 to reject offer");
 		status = scan.nextInt();
 		Offer of = new Offer();
 		
@@ -203,20 +216,24 @@ public class Driver {
 		os.ChangeOfferStatus(of);
 		
 		if(status == 1) {
-			directToPayment(offerId);
+			itemId = directToPayment(offerId);
+			os.rejectPendingOffers(itemId);
 		}
 		
 	}
 	
-	public static void directToPayment(int offerId) throws SQLException, IOException {
+	//pass the offer to payment
+	public static int directToPayment(int offerId) throws SQLException, IOException {
 		Offer offer = new Offer();
 		offer = os.retrieveOfferById(offerId);
 		Payment pm = new Payment();
 		pm.setItemId(offer.getItemId());
 		pm.setUserId(offer.getUserId());
 		pm.setOffer(offer.getPrice());
-		System.out.println(pm);
 		ps.createPayment(pm);
+		return pm.getItemId();
 	}
+	
+	
 	
 };

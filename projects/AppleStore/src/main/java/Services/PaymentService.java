@@ -1,6 +1,7 @@
 package Services;
 
 import java.io.IOException;
+import java.util.List;
 
 import DAOs.PaymentDao;
 import DAOs.PaymentPostgres;
@@ -12,5 +13,9 @@ public class PaymentService {
 	
 	public Payment createPayment(Payment p) throws IOException {
 		return pd.createPayment(p);
+	}
+	
+	public List<Payment> checkPaymentInfo(int userId) throws IOException {
+		return pd.retrivePaymentByUserId(userId);
 	}
 }

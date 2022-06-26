@@ -87,6 +87,29 @@ public class OfferPostgres implements OfferDao {
 		return true;
 	}
 	
+	public boolean rejectPendingOffer(int itemId) throws IOException {
+		String sql = "delete from offers where item_id = ?";
+		int rowsChanged = -1;
+		
+		
+		try(Connection c = ConnectionUtil.getConnectionFromFile()){
+			PreparedStatement ps = c.prepareStatement(sql);	
+			ps.setInt(1, itemId);
+			rowsChanged = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(rowsChanged < 1) {
+			return false;
+		} else {
+			System.out.println("all the pending offers have been rejected");
+		}
+		return true;
+		
+	}
+	
 	
 
 }
