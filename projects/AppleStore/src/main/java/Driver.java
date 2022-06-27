@@ -74,6 +74,7 @@ public class Driver {
 			
 		} catch (LoginException e) {
 			System.out.println("Invalid credentials.");
+			scan.close();
 			System.exit(0);
 		}
 		user_id = as.checkid(username);
@@ -95,6 +96,7 @@ public class Driver {
 		System.out.println("Enter 2 to purchase item");
 		System.out.println("Enter 3 to make an offer");
 		System.out.println("Enter 4 to check accepted offers");
+		System.out.println("Enter 5 to check own items");
 		switch(scan.nextInt()) {
 		case 1: 
 				listItem();
@@ -105,6 +107,8 @@ public class Driver {
 				break;
 		case 4: checkAcceptOffer();
 				makePayment();
+				break;
+		case 5: checkOwnItems();
 				break;
 		default: 
 				menu();
@@ -175,6 +179,9 @@ public class Driver {
 		}
 	}
 	
+	public static void checkOwnItems() {
+		
+	}
 	//admin menu
 	public static void adminMenu() throws  IOException, SQLException {
 		
