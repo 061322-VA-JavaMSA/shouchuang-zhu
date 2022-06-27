@@ -7,6 +7,7 @@ import Exception.LoginException;
 import Models.Item;
 import Models.Offer;
 import Models.Payment;
+import Models.PaymentHistory;
 import Models.User;
 import Services.AuthService;
 import Services.ItemService;
@@ -93,7 +94,7 @@ public class Driver {
 		System.out.println("Enter 1 to check item list");
 		System.out.println("Enter 2 to purchase item");
 		System.out.println("Enter 3 to make an offer");
-		System.out.println("Enter 4 to check offer status");
+		System.out.println("Enter 4 to check accepted offers");
 		switch(scan.nextInt()) {
 		case 1: 
 				listItem();
@@ -103,6 +104,7 @@ public class Driver {
 		case 3: makeOffer();
 				break;
 		case 4: checkAcceptOffer();
+				makePayment();
 				break;
 		default: 
 				menu();
@@ -142,13 +144,46 @@ public class Driver {
 		
 	}
 	
+	public static void makePayment() throws SQLException, IOException {
+		System.out.println("Enter 1 to make payment, else back to the menu");
+		switch(scan.nextInt()) {
+		case 1: 
+				int remainingAmount = 0;
+				System.out.println("Please enter the payment id: ");
+				int payment_id = scan.nextInt();
+				remainingAmount = ps.remainingPayment(payment_id);
+				System.out.println("The remaining balance is " + remainingAmount);
+				System.out.println("Please enter the payment amount: ");
+				
+				int payment = scan.nextInt();
+				if(payment < remainingAmount) {
+					ps.makePayment(payment, payment_id, user_id);
+					ps.addToHistory(user_id, payment_id, payment);
+				} else if (payment == remainingAmount) {
+					ps.makePayment(payment, payment_id, user_id);
+					ps.addToHistory(user_id, payment_id, payment);
+				}
+				  else {
+					System.out.println("Entered amount is exceeding balance!");
+					makePayment();
+				}
+				
+				
+		default:
+			   menu();
+			   break;
+		}
+	}
+	
 	//admin menu
 	public static void adminMenu() throws  IOException, SQLException {
 		
 		System.out.println("Enter the Admin Page");
 		System.out.println("Enter 1 to remove item from list");
 		System.out.println("Enter 2 to add item");
-		System.out.println("Enter 3 to check offers");
+		System.out.println("Enter 3 to check customer sent offers");
+		System.out.println("Enter 4 to check payment histoy");
+		System.out.println("Enter 5 to check payment weekly payment sum");
 		switch(scan.nextInt()) {
 		case 1: 
 				deleteItem();
@@ -160,6 +195,12 @@ public class Driver {
 				break;
 		case 3: 
 				checkOffers();
+				break;
+		case 4: 
+				checkPaymentHistory();
+				break;
+		case 5: 
+				checkWeeklyPaymentTotal();
 				break;
 		default: 
 				adminMenu();
@@ -234,6 +275,15 @@ public class Driver {
 		return pm.getItemId();
 	}
 	
+	public static void checkPaymentHistory() throws IOException {
+		List<PaymentHistory> his = ps.checkPaymentHistory();
+		for(PaymentHistory h: his) {
+			System.out.println(h);
+		}
+	}
 	
+	public static int checkWeeklyPaymentTotal() throws IOException {
+		return ps.checkWeeklyPayment();
+	}
 	
 };

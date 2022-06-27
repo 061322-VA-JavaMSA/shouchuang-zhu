@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Models.Item;
+import Models.Offer;
 import Models.Payment;
+import Models.PaymentHistory;
 import Util.ConnectionUtil;
 
 public class PaymentPostgres implements PaymentDao {
@@ -43,13 +45,16 @@ public class PaymentPostgres implements PaymentDao {
 			ps.setInt(1, userId);
 			
 			ResultSet rs = ps.executeQuery();
+			
 			while(rs.next()) {
 				Payment p = new Payment();
-				p.setPayment(rs.getInt("payment_id"));
+				p.setPaymentId(rs.getInt("payment_id"));
 				p.setItemId(rs.getInt("item_id"));
 				p.setOffer(rs.getInt("offer"));
+				p.setUserId(userId);
 				p.setPayment(rs.getInt("payment"));
 				payments.add(p);
+				
 			}
 			
 		} catch(SQLException e) {
@@ -57,4 +62,116 @@ public class PaymentPostgres implements PaymentDao {
 		}
 		return payments;
 	}
+	
+	public boolean makePayment(int payment, int payment_id, int user_id) throws IOException {
+		String sql = "update payments set payment = ? where payment_id = ? and user_id = ?;";
+		int rowsChanged = -1;
+		int currPayment = 0;
+		String sql2 = "select payment from payments where payment_id = ?;";
+		try(Connection c = ConnectionUtil.getConnectionFromFile()){
+			PreparedStatement p = c.prepareStatement(sql2);
+			p.setInt(1, payment_id);
+			ResultSet rs = p.executeQuery();
+			while(rs.next()) {
+				currPayment = rs.getInt("payment");
+			}
+			PreparedStatement ps = c.prepareStatement(sql);	
+			ps.setInt(1, currPayment + payment);
+			ps.setInt(2, payment_id);
+			ps.setInt(3,  user_id);
+			
+			rowsChanged = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(rowsChanged < 1) {
+			return false;
+		} else {
+			System.out.println("payment has been successfully made!");
+		}
+		return true;
+	}
+	public int retriveRemainingPaymentByPaymentId(int paymentId) throws IOException{
+		String sql = "select * from payments where payment_id = ?;";
+		int remaining = 0;
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, paymentId);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				remaining = rs.getInt("offer") - rs.getInt("payment");	
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return remaining;
+	}
+	
+	//payment history
+	public boolean createPaymentHistory(int user_id, int payment_id, int payment) throws IOException {
+		String sql = "insert into paymenthistory (user_id, payment_id, paymentamount) values (?,?,?);";
+		int rowsChanged = -1;
+		try(Connection c = ConnectionUtil.getConnectionFromFile()){
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, user_id);
+			ps.setInt(2, payment_id);
+			ps.setInt(3, payment);
+			rowsChanged = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(rowsChanged < 1) {
+			return false;
+		} 
+		return true;
+	}
+	
+	public List<PaymentHistory> retrievePaymentHistory() throws IOException {
+		String sql = "select * from paymenthistory;";
+		List<PaymentHistory> pay = new ArrayList<>();
+		
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			Statement s = c.createStatement();
+			ResultSet rs = s.executeQuery(sql);
+			while(rs.next()) {
+				PaymentHistory p = new PaymentHistory();
+				p.setHistoryId(rs.getInt("history_id"));
+				p.setPaymentId(rs.getInt("payment_id"));
+				p.setUserId(rs.getInt("user_id"));
+				p.setPayment(rs.getInt("paymentamount"));
+				
+				pay.add(p);
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return pay;
+	}
+	
+	public int retriveWeeklySum() throws IOException {
+		String sql = "select SUM(paymentamount) as w_sum_payment from paymenthistory where current_timestamp - interval '7 day' <= currdate;";
+		int result = 0;
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				result = rs.getInt("w_sum_payment");
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Last 7 days payment sum is " + result);
+		return result;
+	}
+	
 }
