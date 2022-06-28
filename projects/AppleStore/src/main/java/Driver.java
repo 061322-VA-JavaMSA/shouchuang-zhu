@@ -168,7 +168,11 @@ public class Driver {
 	
 	public static void makePayment() throws SQLException, IOException {
 		System.out.println("Enter 1 to make payment, else back to the menu");
-		switch(scan.nextInt()) {
+		int number = scan.nextInt();
+		if(number != 1) {
+			log.info("User hesitate to make a payment!");
+		}
+		switch(number) {
 		case 1: 
 				int remainingAmount = 0;
 				System.out.println("Please enter the payment id: ");
@@ -189,6 +193,7 @@ public class Driver {
 					ps.addToOwnedItems(user_id, p.getItemId() );
 				} else if (remainingAmount == 0) {
 					System.out.println("You do not own any amount, you cannot make a payment");
+					log.info("User try to overpay!");
 					menu();
 				}
 				  else {

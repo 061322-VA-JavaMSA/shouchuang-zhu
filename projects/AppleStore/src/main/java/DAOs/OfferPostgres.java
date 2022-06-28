@@ -14,7 +14,7 @@ import Util.ConnectionUtil;
 
 public class OfferPostgres implements OfferDao {
 
-
+	@Override
 	public List<Offer> retrieveOffers() throws SQLException, IOException {
 		// TODO Auto-generated method stub
 		String sql = "select * from offers;";
@@ -38,7 +38,7 @@ public class OfferPostgres implements OfferDao {
 		}
 		return offers;
 	}
-	
+	@Override
 	public Offer retrieveOffersById(int id) throws SQLException, IOException {
 		// TODO Auto-generated method stub
 		String sql = "select * from offers;";
@@ -86,7 +86,7 @@ public class OfferPostgres implements OfferDao {
 		}
 		return true;
 	}
-	
+	@Override
 	public boolean rejectPendingOffer(int itemId) throws IOException {
 		String sql = "delete from offers where item_id = ?";
 		int rowsChanged = -1;

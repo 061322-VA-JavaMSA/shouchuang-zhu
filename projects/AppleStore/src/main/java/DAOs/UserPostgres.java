@@ -10,13 +10,8 @@ import Models.User;
 import Util.ConnectionUtil;
 
 public class UserPostgres implements UserDao {
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub 
-
-	}
 	
-	
-
+	@Override
 	public User createUser(User u) throws IOException {
 		String sql = "insert into users (username, password) values (?,?) returning user_id;";
 		try(Connection c = ConnectionUtil.getConnectionFromFile()){
@@ -38,7 +33,7 @@ public class UserPostgres implements UserDao {
 	}
 
 
-
+	@Override
 	public User retriveUserByUsername(String username) throws IOException {
 		String sql = "select * from users where username  = ?;";
 		User u = null;

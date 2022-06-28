@@ -14,6 +14,7 @@ import Models.PaymentHistory;
 import Util.ConnectionUtil;
 
 public class PaymentPostgres implements PaymentDao {
+	@Override
 	public Payment createPayment(Payment p) throws IOException {
 		String sql = "insert into payments (user_id, item_id, offer) values (?,?,?) returning payment_id;";
 		try(Connection c = ConnectionUtil.getConnectionFromFile()){
@@ -32,7 +33,7 @@ public class PaymentPostgres implements PaymentDao {
 		}
 		return p;
 	}
-	
+	@Override
 	public List<Payment> retrivePaymentByUserId(int userId) throws IOException{
 		String sql = "select * from payments where user_id = ?;";
 		List<Payment> payments = new ArrayList<Payment>();
@@ -59,7 +60,7 @@ public class PaymentPostgres implements PaymentDao {
 		}
 		return payments;
 	}
-	
+	@Override
 	public boolean makePayment(int payment, int payment_id, int user_id) throws IOException {
 		String sql = "update payments set payment = ? where payment_id = ? and user_id = ?;";
 		int rowsChanged = -1;
@@ -89,6 +90,7 @@ public class PaymentPostgres implements PaymentDao {
 		}
 		return true;
 	}
+	@Override
 	public int retriveRemainingPaymentByPaymentId(int paymentId) throws IOException{
 		String sql = "select * from payments where payment_id = ?;";
 		int remaining = 0;
@@ -109,6 +111,7 @@ public class PaymentPostgres implements PaymentDao {
 	}
 	
 	//payment history
+	@Override
 	public boolean createPaymentHistory(int user_id, int payment_id, int payment) throws IOException {
 		String sql = "insert into paymenthistory (user_id, payment_id, paymentamount) values (?,?,?);";
 		int rowsChanged = -1;
@@ -127,7 +130,7 @@ public class PaymentPostgres implements PaymentDao {
 		} 
 		return true;
 	}
-	
+	@Override
 	public List<PaymentHistory> retrievePaymentHistory() throws IOException {
 		String sql = "select * from paymenthistory;";
 		List<PaymentHistory> pay = new ArrayList<>();
@@ -150,7 +153,7 @@ public class PaymentPostgres implements PaymentDao {
 		}
 		return pay;
 	}
-	
+	@Override
 	public int retriveWeeklySum() throws IOException {
 		String sql = "select SUM(paymentamount) as w_sum_payment from paymenthistory where current_timestamp - interval '7 day' <= currdate;";
 		int result = 0;
@@ -168,7 +171,7 @@ public class PaymentPostgres implements PaymentDao {
 		System.out.println("Last 7 days payment sum is " + result);
 		return result;
 	}
-	
+	@Override
 	public Payment retrivePaymentByPaymentId (int paymentId) throws IOException {
 		String sql = "select * from payments where payment_id = ?;";
 		Payment p = new Payment();
@@ -192,7 +195,7 @@ public class PaymentPostgres implements PaymentDao {
 		return p;
 		
 	}
-	
+	@Override
 	public boolean addToOwnedItems(int userId, int itemId) throws IOException {
 		String sql = "insert into owneditems (user_id, item_id) values (?,?);";
 		int rowsChanged = -1;
@@ -213,10 +216,10 @@ public class PaymentPostgres implements PaymentDao {
 	
 	
 	
-	
+	@Override
 	public List<String> retriveOwnedItem(int userId) throws IOException {
 		String sql = "select itemname from items i inner join owneditems o on i.item_id = o.item_id where user_id = ?;";
-		List<String> l = new ArrayList();
+		List<String> l = new ArrayList<String>();
 		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
 			PreparedStatement ps = c.prepareStatement(sql);
 			ps.setInt(1,userId);
