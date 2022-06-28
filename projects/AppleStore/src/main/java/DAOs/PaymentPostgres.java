@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.Own;
 import Models.Payment;
 import Models.PaymentHistory;
 import Util.ConnectionUtil;

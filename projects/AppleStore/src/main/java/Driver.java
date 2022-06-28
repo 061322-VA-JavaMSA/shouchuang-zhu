@@ -106,16 +106,20 @@ public class Driver {
 		switch(scan.nextInt()) {
 		case 1: 
 				listItem();
+				System.out.println("-----------------------------------");
 				menu();
 				break;
 		case 2: makeOffer();
+				System.out.println("-----------------------------------");
 				menu();
 				break;
 		case 3: checkAcceptOffer();
+				System.out.println("-----------------------------------");
 				makePayment();
 				menu();
 				break;
 		case 4: checkOwnItems();
+				System.out.println("-----------------------------------");
 				menu();
 				break;
 		default: 
@@ -149,6 +153,7 @@ public class Driver {
 		
 	}
 	public static void checkAcceptOffer() throws IOException {
+		System.out.println("My items: ");
 		List<Payment> payments = ps.checkPaymentInfo(user_id);
 		for(Payment p : payments) {
 			System.out.println(p);
@@ -177,6 +182,9 @@ public class Driver {
 					Payment p = new Payment();
 					p = ps.retrivePaymentByPaymentId(payment_id);
 					ps.addToOwnedItems(user_id, p.getItemId() );
+				} else if (remainingAmount == 0) {
+					System.out.println("You do not own any amount, you cannot make a payment");
+					menu();
 				}
 				  else {
 					System.out.println("Entered amount is exceeding balance!");
@@ -209,22 +217,27 @@ public class Driver {
 		switch(scan.nextInt()) {
 		case 1: 
 				deleteItem();
+				System.out.println("-----------------------------------");
 				adminMenu();
 				break;
 		case 2: 
 				addItem();
+				System.out.println("-----------------------------------");
 				adminMenu();
 				break;
 		case 3: 
 				checkOffers();
+				System.out.println("-----------------------------------");
 				adminMenu();
 				break;
 		case 4: 
 				checkPaymentHistory();
+				System.out.println("-----------------------------------");
 				adminMenu();
 				break;
 		case 5: 
 				checkWeeklyPaymentTotal();
+				System.out.println("-----------------------------------");
 				adminMenu();
 				break;
 		default: 
