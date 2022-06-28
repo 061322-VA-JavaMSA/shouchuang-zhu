@@ -1,7 +1,11 @@
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import Exception.LoginException;
 import Models.Item;
@@ -26,6 +30,8 @@ public class Driver {
 	static String username = null;
 	static String password = null;
 	static int user_id;
+	
+	private static Logger log = LogManager.getLogger(Driver.class);
 	public static void main(String[] args) throws LoginException, IOException, SQLException {
 		scan = new Scanner(System.in);
 		as = new AuthService();
@@ -74,6 +80,7 @@ public class Driver {
 			
 		} catch (LoginException e) {
 			System.out.println("Invalid credentials.");
+			log.error("Login exception was thrown: " + e.fillInStackTrace());
 			scan.close();
 			System.exit(0);
 		}
@@ -93,22 +100,23 @@ public class Driver {
 	public static void menu( ) throws SQLException, IOException {
 		System.out.println("Enter the Customer Page");
 		System.out.println("Enter 1 to check item list");
-		System.out.println("Enter 2 to purchase item");
-		System.out.println("Enter 3 to make an offer");
-		System.out.println("Enter 4 to check accepted offers");
-		System.out.println("Enter 5 to check own items");
+		System.out.println("Enter 2 to make an offer");
+		System.out.println("Enter 3 to check accepted offers");
+		System.out.println("Enter 4 to check own items");
 		switch(scan.nextInt()) {
 		case 1: 
 				listItem();
 				menu();
 				break;
-		case 2: 
-		case 3: makeOffer();
+		case 2: makeOffer();
+				menu();
 				break;
-		case 4: checkAcceptOffer();
+		case 3: checkAcceptOffer();
 				makePayment();
+				menu();
 				break;
-		case 5: checkOwnItems();
+		case 4: checkOwnItems();
+				menu();
 				break;
 		default: 
 				menu();
@@ -166,6 +174,9 @@ public class Driver {
 				} else if (payment == remainingAmount) {
 					ps.makePayment(payment, payment_id, user_id);
 					ps.addToHistory(user_id, payment_id, payment);
+					Payment p = new Payment();
+					p = ps.retrivePaymentByPaymentId(payment_id);
+					ps.addToOwnedItems(user_id, p.getItemId() );
 				}
 				  else {
 					System.out.println("Entered amount is exceeding balance!");
@@ -179,9 +190,13 @@ public class Driver {
 		}
 	}
 	
-	public static void checkOwnItems() {
-		
+	public static void checkOwnItems() throws IOException {
+		List<String> li = ps.checkOwnedItems(user_id);
+		for(String l : li) {
+			System.out.println(l);
+		}
 	}
+	
 	//admin menu
 	public static void adminMenu() throws  IOException, SQLException {
 		
@@ -202,12 +217,15 @@ public class Driver {
 				break;
 		case 3: 
 				checkOffers();
+				adminMenu();
 				break;
 		case 4: 
 				checkPaymentHistory();
+				adminMenu();
 				break;
 		case 5: 
 				checkWeeklyPaymentTotal();
+				adminMenu();
 				break;
 		default: 
 				adminMenu();

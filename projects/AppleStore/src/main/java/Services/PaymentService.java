@@ -38,4 +38,17 @@ public class PaymentService {
 	public int checkWeeklyPayment() throws IOException {
 		return pd.retriveWeeklySum();
 	}
+	
+	public boolean addToOwnedItems(int userId, int itemId) throws IOException {
+		return pd.addToOwnedItems(userId, itemId);
+	}
+	
+	public Payment retrivePaymentByPaymentId (int paymentId) throws IOException {
+		return pd.retrivePaymentByPaymentId(paymentId);
+	}
+	
+	public List<String> checkOwnedItems(int userId) throws IOException{
+		return pd.retriveOwnedItem(userId);
+	}
+	
 }

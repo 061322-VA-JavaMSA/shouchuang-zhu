@@ -9,8 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Models.Item;
-import Models.Offer;
+import Models.Own;
 import Models.Payment;
 import Models.PaymentHistory;
 import Util.ConnectionUtil;
@@ -30,7 +29,6 @@ public class PaymentPostgres implements PaymentDao {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return p;
@@ -82,7 +80,6 @@ public class PaymentPostgres implements PaymentDao {
 			
 			rowsChanged = ps.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -124,7 +121,6 @@ public class PaymentPostgres implements PaymentDao {
 			rowsChanged = ps.executeUpdate();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(rowsChanged < 1) {
@@ -174,4 +170,68 @@ public class PaymentPostgres implements PaymentDao {
 		return result;
 	}
 	
+	public Payment retrivePaymentByPaymentId (int paymentId) throws IOException {
+		String sql = "select * from payments where payment_id = ?;";
+		Payment p = new Payment();
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,paymentId);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				p.setPaymentId(paymentId);
+				p.setItemId(rs.getInt("item_id"));
+				p.setOffer(rs.getInt("offer"));
+				p.setUserId(rs.getInt("user_id"));
+				p.setPayment(rs.getInt("payment"));	
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return p;
+		
+	}
+	
+	public boolean addToOwnedItems(int userId, int itemId) throws IOException {
+		String sql = "insert into owneditems (user_id, item_id) values (?,?);";
+		int rowsChanged = -1;
+		try(Connection c = ConnectionUtil.getConnectionFromFile()){
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ps.setInt(2, itemId);
+			rowsChanged = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(rowsChanged < 1) {
+			return false;
+		} 
+		return true;
+	}
+	
+	
+	
+	
+	public List<String> retriveOwnedItem(int userId) throws IOException {
+		String sql = "select itemname from items i inner join owneditems o on i.item_id = o.item_id where user_id = ?;";
+		List<String> l = new ArrayList();
+		try(Connection c = ConnectionUtil.getConnectionFromFile();) {
+			PreparedStatement ps = c.prepareStatement(sql);
+			ps.setInt(1,userId);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				l.add(rs.getString("itemname"));	
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return l;
+		
+	}
 }

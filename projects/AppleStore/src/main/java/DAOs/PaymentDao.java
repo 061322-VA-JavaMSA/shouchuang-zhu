@@ -14,4 +14,8 @@ public interface PaymentDao {
 	boolean createPaymentHistory(int user_id, int payment_id, int payment) throws IOException;
 	List<PaymentHistory> retrievePaymentHistory() throws IOException;
 	int retriveWeeklySum() throws IOException;
+	boolean addToOwnedItems(int userId, int itemId) throws IOException;
+	Payment retrivePaymentByPaymentId (int paymentId) throws IOException;
+	List<String> retriveOwnedItem(int userId) throws IOException;
+	
 }
