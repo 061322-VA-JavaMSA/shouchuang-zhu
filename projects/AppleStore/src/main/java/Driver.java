@@ -42,8 +42,13 @@ public class Driver {
 		
 		//start of the program
 		System.out.println("Enter 1 to signup and enter 2 to login");
-		
-		switch (scan.nextInt()) {
+		 while (!scan.hasNextInt()) {
+		      System.out.println("Input is not a number. Please enter 1 to signup and enter 2 to login");
+		      log.info("User input not number error");
+		      scan.nextLine();
+		    }
+		int number = scan.nextInt();
+		switch (number) {
 		//case 1 for register
 			case 1: System.out.println("Please enter username");
 					String uname = scan.next();
