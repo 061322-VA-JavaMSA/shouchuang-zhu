@@ -58,7 +58,7 @@ public class ItemPostgres implements ItemDao {
 		}
 		return items;
 	}
-	
+	@Override
 	public boolean deleteItemByid(int id) throws IOException {
 		String sql = "delete from items where item_id = ?;";
 		int rowsChanged = -1;

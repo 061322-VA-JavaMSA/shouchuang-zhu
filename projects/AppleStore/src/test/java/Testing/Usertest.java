@@ -8,7 +8,7 @@ import Models.User;
 
 class userTest { 
 	@Test
-	public void userTest() {
+	public void usersTest() {
 		User u = new User();
 		u.setUsername("hello");
 		assertNotNull(u);

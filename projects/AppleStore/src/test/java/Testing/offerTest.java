@@ -19,4 +19,8 @@ class offerTest {
 	void getOfferTest() throws SQLException, IOException {
 		assertNotNull(o.getOffers());
 	}
+	@Test
+	void rejectTest() throws IOException {
+		assertNotNull(o.rejectPendingOffers(0));
+	}
 }
