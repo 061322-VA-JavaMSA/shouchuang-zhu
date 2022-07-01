@@ -14,7 +14,7 @@ public class UserService {
 	private static Logger log = LogManager.getLogger(UserService.class);
 	public User createUser(User u) throws IOException {
 		User user = ud.createUser(u);
-		log.info("User: " + user + "was created.");
+		log.info("New user has been created.");
 		return user;
 	}
 	
