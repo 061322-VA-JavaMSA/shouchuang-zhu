@@ -11,6 +11,15 @@
   </servlet>
   <servlet-mapping>
   			<servlet-name>user-servlet</servlet-name>
-  			<url-pattern>/users</url-pattern>
+  			<url-pattern>/users/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  			<servlet-name>auth-servlet</servlet-name>
+  			<servlet-class>servlets.AuthServlet</servlet-class>
+  			<load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  			<servlet-name>auth-servlet</servlet-name>
+  			<url-pattern>/auth</url-pattern>
   </servlet-mapping>
 </web-app>

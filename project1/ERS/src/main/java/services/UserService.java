@@ -7,8 +7,9 @@ import daos.UserHibernate;
 import models.User;
 
 public class UserService {
-	public UserDao u = new UserHibernate();
+	public UserDao ud = new UserHibernate();
 	public List<User> getUsers() {
-		return u.getUsers();
+		List<User> users = ud.getUsers();
+		return users;
 	}
 }

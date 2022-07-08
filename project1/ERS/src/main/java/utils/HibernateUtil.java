@@ -10,7 +10,7 @@ private static SessionFactory sf;
 		
 		if(sf == null || sf.isClosed() == true) {
 			sf = new Configuration()
-					.configure("hibernate.cfg.xml")
+					.configure()
 					.buildSessionFactory();
 		}
 		return sf;

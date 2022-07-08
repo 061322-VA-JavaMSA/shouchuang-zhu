@@ -2,13 +2,31 @@ package models;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="ers_users")
 public class User {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ers_user_id")
 	private int id;
+	@Column(name = "ers_username", nullable = false, unique = true)
 	private String username;
+	@Column(name = "ers_password", nullable = false)
 	private String password;
+	@Column(name = "ers_first_name", nullable = false)
 	private String firstName;
+	@Column(name = "ers_last_name", nullable = false)
 	private String lastName;
+	@Column(name = "ers_email", nullable = false, unique = true)
 	private String email;
+	@Column(name = "user_role_id", nullable = false)
 	private int roleId;
 	
 	public int getId() {
