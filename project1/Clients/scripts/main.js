@@ -17,7 +17,8 @@ if (principalString) {
         createNavElement('Users', nav_left, './users.html', null);
         createNavElement('Reimbursement List', nav_left, './manager.html', null);
     } else if (principal.roleId === 2) {
-        createNavElement('Reimbursement', nav_left, './employee.html', null);
+        createNavElement('Submit a ticket', nav_left, './employee.html', null);
+        createNavElement('Check my reimbursement', nav_left, './employeeticket.html', null);
     }
 
     createNavElement('Logout', nav_right, null, logout);

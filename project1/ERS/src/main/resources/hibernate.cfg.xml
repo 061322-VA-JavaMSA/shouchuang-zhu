@@ -22,6 +22,7 @@
 		
 		
 		<mapping class="models.User"></mapping>
+		<mapping class="models.Reimbursement"></mapping>
     </session-factory>
 
 </hibernate-configuration>
