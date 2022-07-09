@@ -30,4 +30,12 @@
   			<servlet-name>employee-servlet</servlet-name>
   			<url-pattern>/employee/*</url-pattern>
   </servlet-mapping>
+   <servlet>
+  			<servlet-name>employer-servlet</servlet-name>
+  			<servlet-class>servlets.EmployerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  			<servlet-name>employer-servlet</servlet-name>
+  			<url-pattern>/manager/*</url-pattern>
+  </servlet-mapping>
 </web-app>
