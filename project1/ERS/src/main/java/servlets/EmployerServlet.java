@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import models.Reimbursement;
@@ -23,7 +26,7 @@ public class EmployerServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	public static int id = 2;
+	
 	private static final long serialVersionUID = 1L;
 	private EmployerService es = new EmployerService();
 	private ObjectMapper om = new ObjectMapper();
@@ -43,7 +46,18 @@ public class EmployerServlet extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+		CorsFix.addCorsHeader(req.getRequestURI(), res);
+		res.addHeader("Content-Type", "application/json");
 		
+		InputStream reqBody = req.getInputStream();
+		om.registerModule(new JavaTimeModule());
+		om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		Reimbursement r = om.readValue(reqBody, Reimbursement.class);
+		
+		LocalDateTime now = LocalDateTime.now();
+		r.setReimbResolved(now);
+		es.updateReimbursement(r);
+		res.setStatus(202);
 		
 	}
 

@@ -34,17 +34,5 @@ public class EmployeeHibernate implements EmployeeDao{
 		
 	}
 	
-//	public int getLastReimbId(Reimbursement r) {
-//		int reimbid = 0;
-//		Session session=HibernateUtil.getSessionFactory().openSession();
-//	    Transaction trans=session.beginTransaction();
-//	    try{
-//	        session.save(r);   
-//	        reimbid=r.getReimbId();
-//	        trans.commit();     
-//	    }
-//	    catch(HibernateException he){}
-//		return reimbid;
-//	}
 
 }

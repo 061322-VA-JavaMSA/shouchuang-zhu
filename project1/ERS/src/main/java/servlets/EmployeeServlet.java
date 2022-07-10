@@ -25,7 +25,7 @@ public class EmployeeServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	public static int id = 2;
+
 	private static final long serialVersionUID = 1L;
 	private EmployeeService es = new EmployeeService();
 	private ObjectMapper om = new ObjectMapper();
@@ -52,7 +52,6 @@ public class EmployeeServlet extends HttpServlet {
 		LocalDateTime now = LocalDateTime.now();
 		r.setReimbSubmitted(now);
 		
-		System.out.println(id);
 		es.insertReimbursement(r);
 		res.setStatus(201);
 		

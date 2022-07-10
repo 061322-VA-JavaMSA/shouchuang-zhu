@@ -55,6 +55,7 @@ function populateTable(results){
         let type;
         //let status;
         let time;
+        let time2;
         if(result.reimbTypeId == 1) {
             type = 'lodging'
         } else if (result.reimbTypeId == 2) {
@@ -72,13 +73,18 @@ function populateTable(results){
         // } else {
         //     status = 'rejected'
         // }
-        time = `${result.reimbSubmitted[0]}-${result.reimbSubmitted[1]}-${result.reimbSubmitted[2]}`
-
+        time = result.reimbSubmitted.toString().slice(0,10)
+        if(result.reimbResolved){
+            time2 = result.reimbResolved.toString().slice(0,10)
+        } else {
+            time2 = "not resolved yet"
+        }
+        
         tdId.innerHTML = result.reimbId;
         tdAmount.innerHTML = result.reimbAmount;
         tdType.innerHTML = type
         tdTimeSubmitted.innerHTML = time;
-        tdTimeResolved.innerHTML = result.reimbResolved;
+        tdTimeResolved.innerHTML = time2;
         tdResolver.innerHTML = result.reimbResolver;
         tdDescription.innerHTML = result.reimbDescription;
         
@@ -97,4 +103,48 @@ function populateTable(results){
 
         tableBody.append(tr);
     });
+
 }
+
+
+
+    let updateButton = document.getElementById('submitButton');
+    updateButton.addEventListener('click', updateStatus);
+    
+   
+    async function updateStatus(){
+        let reimbId = document.getElementById('updateId').value;
+        let table = document.getElementById('employer-tbody');
+        let rowLen = table.rows.length
+        let select;
+        for(let i = 0; i < rowLen; i++){ 
+            if(table.rows[i].cells[0].innerHTML == reimbId){
+                select = table.rows[i].cells[7].querySelector('#statusSelect').value;
+                let response = await fetch(`${apiUrl}/manager`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'reimbId': reimbId,
+                        'reimbStatusId': `${select}`
+                    })
+                })
+                if(response.status == 202) {
+                    window.location.href="./manager.html";
+                }
+            
+            }
+        }
+        
+        
+        // 'reimbTypeId': reimbId,
+        // 'reimbAmount': table.rows[i].cells[1].innerHTML,
+        // 'reimbTypeId': table.rows[i].cells[2].innerHTML,
+        // 'reimbSubmitted':
+        // 'reimbResolved': undefined,
+        // 'reimbDescription': table.rows[i].cells[2].innerHTML,
+        // 'reimbAuthor': table.rows[i].cells[3].innerHTML,
+        // 'reimbResolver': table.rows[i].cells[4].innerHTML,
+    
+    }

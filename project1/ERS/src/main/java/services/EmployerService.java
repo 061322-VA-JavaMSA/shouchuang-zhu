@@ -11,4 +11,10 @@ public class EmployerService {
 	public List<Reimbursement> getReimbursement(){
 		return ed.getReimbursement();
 	}
+	
+	public void updateReimbursement(Reimbursement r) {
+		ed.updateReimbursement(r);
+	}
+	
+	
 }
