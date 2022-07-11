@@ -9,12 +9,6 @@ async function getEmployeeList() {
  
     let data = await response.json();
 
-    // let result = [];
-    // for(let obj of data){
-    //     if(obj.reimbAuthor == userId){
-    //         result.push(obj);
-    //     }
-    // }
     console.log(data);
     populateTable(data);
     
@@ -53,7 +47,6 @@ function populateTable(results){
         sel.appendChild(option3);
 
         let type;
-        //let status;
         let time;
         let time2;
         if(result.reimbTypeId == 1) {
@@ -66,13 +59,7 @@ function populateTable(results){
             type = 'other'
         }
 
-        // if(result.reimbStatusId == 1) {
-        //     status = 'pending'
-        // } else if (result.reimbStatusId == 2) {
-        //     status = 'accepted'
-        // } else {
-        //     status = 'rejected'
-        // }
+        
         time = result.reimbSubmitted.toString().slice(0,10)
         if(result.reimbResolved){
             time2 = result.reimbResolved.toString().slice(0,10)
@@ -137,14 +124,4 @@ function populateTable(results){
             }
         }
         
-        
-        // 'reimbTypeId': reimbId,
-        // 'reimbAmount': table.rows[i].cells[1].innerHTML,
-        // 'reimbTypeId': table.rows[i].cells[2].innerHTML,
-        // 'reimbSubmitted':
-        // 'reimbResolved': undefined,
-        // 'reimbDescription': table.rows[i].cells[2].innerHTML,
-        // 'reimbAuthor': table.rows[i].cells[3].innerHTML,
-        // 'reimbResolver': table.rows[i].cells[4].innerHTML,
-    
     }
