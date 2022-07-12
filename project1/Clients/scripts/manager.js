@@ -66,13 +66,17 @@ function populateTable(results){
         } else {
             time2 = "not resolved yet"
         }
+        let resolver = "";
+        if(result.reimbResolver == 1) {
+            resolver = "alex"
+        }
         
         tdId.innerHTML = result.reimbId;
         tdAmount.innerHTML = result.reimbAmount;
         tdType.innerHTML = type
         tdTimeSubmitted.innerHTML = time;
         tdTimeResolved.innerHTML = time2;
-        tdResolver.innerHTML = result.reimbResolver;
+        tdResolver.innerHTML = resolver;
         tdDescription.innerHTML = result.reimbDescription;
         
         sel.value = result.reimbStatusId;
@@ -125,3 +129,20 @@ function populateTable(results){
         }
         
     }
+
+
+    searchBox_1.addEventListener("click", function(){
+        var keyword = this.value;
+        var table_1 = document.getElementById("employer-tbody");
+        var all_tr = table_1.getElementsByTagName("tr");
+        for(var i=0; i<all_tr.length; i++){
+            var name_column = all_tr[i].getElementsByTagName("td")[7].querySelector('#statusSelect').value;
+            if(name_column === keyword) {
+                all_tr[i].style.display = ""; // show
+            } else {
+                all_tr[i].style.display = "none"; // hide
+            }
+        }
+        
+        
+    });       
