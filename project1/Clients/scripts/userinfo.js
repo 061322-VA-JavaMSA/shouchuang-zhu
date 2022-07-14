@@ -13,7 +13,7 @@ var userObj = {
 getUser()
 async function getUser(){
 
-    let response = await fetch(`${apiUrl}/userinfo`, {
+    let response = await fetch(`${apiUrl}/userinfo?name=${userData.userName}`, {
     });
     
     if(response.status == 200){
@@ -70,7 +70,7 @@ async function updateUserInfo() {
             'lastName': `${newLastName}`,
         })
     })
-    if(response.status == 202) {
+    if(response.status == 200) {
         window.location.href="./userinfo.html";
     }
 }

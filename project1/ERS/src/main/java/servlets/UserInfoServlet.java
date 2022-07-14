@@ -21,15 +21,15 @@ public class UserInfoServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	UserService us = new UserService();
 	private ObjectMapper om = new ObjectMapper();
-
-
+	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		CorsFix.addCorsHeader(req.getRequestURI(), res);
 		res.addHeader("Content-Type", "application/json");
 		String pathInfo = req.getPathInfo();
-		//String username = req.getParameter("username");
+		String user = req.getParameter("name");
+		System.out.println(user);
 		if(pathInfo == null) {
-			User u = us.getUsersByUsername("iris");
+			User u = us.getUsersByUsername(user);
 			PrintWriter pw = res.getWriter();
 			pw.write(om.writeValueAsString(u));
 			pw.close();
