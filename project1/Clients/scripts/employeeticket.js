@@ -40,6 +40,7 @@ function populateTable(results){
         let type;
         let status;
         let time;
+        let time2;
         if(result.reimbTypeId == 1) {
             type = 'lodging'
         } else if (result.reimbTypeId == 2) {
@@ -58,12 +59,18 @@ function populateTable(results){
             status = 'rejected'
         }
         time = `${result.reimbSubmitted[0]}-${result.reimbSubmitted[1]}-${result.reimbSubmitted[2]}`
+        //time = result.reimbSubmitted.toString().slice(0,10)
+        if(result.reimbResolved){
+            time2 = `${result.reimbResolved[0]}-${result.reimbResolved[1]}-${result.reimbResolved[2]}`
+        } else {
+            time2 = "not resolved yet"
+        }
 
         tdId.innerHTML = result.reimbId;
         tdAmount.innerHTML = result.reimbAmount;
         tdType.innerHTML = type
         tdTimeSubmitted.innerHTML = time;
-        tdTimeResolved.innerHTML = result.reimbResolved;
+        tdTimeResolved.innerHTML = time2;
         tdResolver.innerHTML = result.reimbResolver;
         tdDescription.innerHTML = result.reimbDescription;
         tdStatus.innerHTML = status

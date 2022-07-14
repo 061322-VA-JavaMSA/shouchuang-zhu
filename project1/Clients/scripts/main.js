@@ -12,13 +12,13 @@ let nav_left = document.getElementById("nav-left");
 if (principalString) {
     // converts the JSON string back to a JS object and assigns it to principal
     principal = JSON.parse(principalString);
-    console.log(principal)
     if (principal.roleId === 1) {
         createNavElement('Users', nav_left, './users.html', null);
         createNavElement('Reimbursement List', nav_left, './manager.html', null);
     } else if (principal.roleId === 2) {
         createNavElement('Submit a ticket', nav_left, './employee.html', null);
         createNavElement('Check my reimbursement', nav_left, './employeeticket.html', null);
+        createNavElement('Account', nav_right, './userinfo.html', null);
     }
 
     createNavElement('Logout', nav_right, null, logout);

@@ -38,4 +38,13 @@
   			<servlet-name>employer-servlet</servlet-name>
   			<url-pattern>/manager/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+  			<servlet-name>userInfo-servlet</servlet-name>
+  			<servlet-class>servlets.UserInfoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  			<servlet-name>userInfo-servlet</servlet-name>
+  			<url-pattern>/userinfo/*</url-pattern>
+  </servlet-mapping>
 </web-app>

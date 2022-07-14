@@ -9,16 +9,7 @@ let userData = JSON.parse(data);
 async function submitTicket() {
     let reimbursmentAmount = document.getElementById('reimbursementAmount').value;
     let rt = document.getElementById('reimbursementType').value;
-    let reimbursmentType;
-    if(rt == 'lodging') {
-        reimbursmentType = 1;
-    } else if (rt == 'travel') {
-        reimbursmentType = 2;
-    } else if (rt == 'food'){
-        reimbursmentType = 3;
-    } else {
-        reimbursmentType = 4;
-    }
+
     let description = document.getElementById('description').value;
     userId = userData.id;
     
@@ -28,7 +19,7 @@ async function submitTicket() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'reimbTypeId': `${reimbursmentType}`,
+            'reimbTypeId': `${rt}`,
             'reimbAmount': `${reimbursmentAmount}`,
             'reimbDescription': `${description}`,
             'reimbAuthor': `${userId}`,

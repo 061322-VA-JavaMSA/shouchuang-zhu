@@ -12,4 +12,12 @@ public class UserService {
 		List<User> users = ud.getUsers();
 		return users;
 	}
+	
+	public User getUsersByUsername(String u) {
+		return ud.getUserByUsername(u);
+	}
+	
+	public void updateUserInfo(User u) {
+		ud.updateUser(u);
+	}
 }

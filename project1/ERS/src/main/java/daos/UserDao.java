@@ -8,4 +8,5 @@ public interface UserDao {
 	List<User> getUsers();
 
 	User getUserByUsername(String username);
+	void updateUser(User u);
 }

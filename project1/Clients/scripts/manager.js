@@ -73,7 +73,7 @@ function populateTable(results){
         
         tdId.innerHTML = result.reimbId;
         tdAmount.innerHTML = result.reimbAmount;
-        tdType.innerHTML = type
+        tdType.innerHTML = type;
         tdTimeSubmitted.innerHTML = time;
         tdTimeResolved.innerHTML = time2;
         tdResolver.innerHTML = resolver;

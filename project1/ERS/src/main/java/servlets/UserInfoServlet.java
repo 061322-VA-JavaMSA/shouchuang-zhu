@@ -8,51 +8,48 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import models.Reimbursement;
-import services.EmployeeService;
+import models.User;
+import services.UserService;
 import utils.CorsFix;
-import java.time.LocalDateTime;
-import java.util.List;
-public class EmployeeServlet extends HttpServlet {
 
+public class UserInfoServlet extends HttpServlet{
 	/**
 	 * 
 	 */
-
 	private static final long serialVersionUID = 1L;
-	private EmployeeService es = new EmployeeService();
+	UserService us = new UserService();
 	private ObjectMapper om = new ObjectMapper();
-	@Override
+
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		CorsFix.addCorsHeader(req.getRequestURI(), res);
 		res.addHeader("Content-Type", "application/json");
 		String pathInfo = req.getPathInfo();
-		om.registerModule(new JavaTimeModule());
+		//String username = req.getParameter("username");
 		if(pathInfo == null) {
-			List<Reimbursement> r = es.getReimbursement();
+			User u = us.getUsersByUsername("iris");
 			PrintWriter pw = res.getWriter();
-			pw.write(om.writeValueAsString(r));
+			pw.write(om.writeValueAsString(u));
 			pw.close();
 		}
 	}
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+	
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		CorsFix.addCorsHeader(req.getRequestURI(), res);
 		res.addHeader("Content-Type", "application/json");
-		
 		InputStream reqBody = req.getInputStream();
-		Reimbursement r = om.readValue(reqBody, Reimbursement.class);
-		LocalDateTime now = LocalDateTime.now();
-		r.setReimbSubmitted(now);
 		
-		es.insertReimbursement(r);
-		res.setStatus(201);
+		User u = om.readValue(reqBody, User.class);
+		System.out.println(u);
+		us.updateUserInfo(u);
 		
+		
+		res.setStatus(200);
 	}
-
+	
 	@Override
 	protected void doOptions(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		CorsFix.addCorsHeader(req.getRequestURI(),res);

@@ -3,7 +3,8 @@ package daos;
 import java.util.List;
 
 import org.hibernate.Session;
-
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -47,5 +48,23 @@ public class UserHibernate implements UserDao {
 		}
 		
 		return users;
+	}
+
+	@Override
+	public void updateUser(User u) {
+		try(Session s = HibernateUtil.getSessionFactory().openSession()) {
+			String str = "Update User set email = :email," + "firstName = :fname," + "lastName = :lname " + "where id = :id";
+			Transaction txn = s.beginTransaction();
+			Query query = s.createQuery(str);
+			
+			query.setParameter("email", u.getEmail());
+			query.setParameter("fname", u.getFirstName());
+			query.setParameter("lname", u.getLastName());
+			query.setParameter("id", u.getId());
+			query.executeUpdate();
+			txn.commit();
+			
+		}
+		
 	}
 }
