@@ -60,9 +60,9 @@ function populateTable(results){
         }
 
         
-        time = result.reimbSubmitted.toString().slice(0,10)
+        time = `${result.reimbSubmitted[0]}-${result.reimbSubmitted[1]}-${result.reimbSubmitted[2]}`
         if(result.reimbResolved){
-            time2 = result.reimbResolved.toString().slice(0,10)
+            time2 = `${result.reimbResolved[0]}-${result.reimbResolved[1]}-${result.reimbResolved[2]}`
         } else {
             time2 = "not resolved yet"
         }
@@ -135,14 +135,22 @@ function populateTable(results){
         var keyword = this.value;
         var table_1 = document.getElementById("employer-tbody");
         var all_tr = table_1.getElementsByTagName("tr");
-        for(var i=0; i<all_tr.length; i++){
-            var name_column = all_tr[i].getElementsByTagName("td")[7].querySelector('#statusSelect').value;
-            if(name_column === keyword) {
+        if(keyword != 0) {
+            for(var i=0; i<all_tr.length; i++){
+                var name_column = all_tr[i].getElementsByTagName("td")[7].querySelector('#statusSelect').value;
+                if(name_column === keyword) {
+                    all_tr[i].style.display = ""; // show
+                } else {
+                    all_tr[i].style.display = "none"; // hide
+                }
+            }
+        } else {
+            for(var i=0; i<all_tr.length; i++){
                 all_tr[i].style.display = ""; // show
-            } else {
-                all_tr[i].style.display = "none"; // hide
+                
             }
         }
+        
         
         
     });       

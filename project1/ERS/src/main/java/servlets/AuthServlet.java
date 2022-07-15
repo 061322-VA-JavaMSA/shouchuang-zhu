@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dtos.UserDto;
@@ -27,7 +30,7 @@ public class AuthServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AuthService as = new AuthService();
 	private ObjectMapper om = new ObjectMapper();
-	
+	private static Logger log = LogManager.getLogger(AuthServlet.class);
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 		CorsFix.addCorsHeader(req.getRequestURI(), res);
 		
@@ -50,8 +53,10 @@ public class AuthServlet extends HttpServlet {
 				pw.write(om.writeValueAsString(principalDTO));
 				res.setStatus(200);
 			}
+			log.info("Login successfully");
 
 		} catch (UserNotFoundException | LoginException e) {
+			log.error("Login exception was thrown: " + e.fillInStackTrace());
 			res.sendError(400, "Login unsuccessful.");
 			e.printStackTrace();
 		} 

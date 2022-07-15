@@ -33,6 +33,9 @@ public class UserInfoServlet extends HttpServlet{
 			PrintWriter pw = res.getWriter();
 			pw.write(om.writeValueAsString(u));
 			pw.close();
+			res.setStatus(200);
+		} else {
+			res.setStatus(400);
 		}
 	}
 	
@@ -41,13 +44,14 @@ public class UserInfoServlet extends HttpServlet{
 		CorsFix.addCorsHeader(req.getRequestURI(), res);
 		res.addHeader("Content-Type", "application/json");
 		InputStream reqBody = req.getInputStream();
-		
 		User u = om.readValue(reqBody, User.class);
-		System.out.println(u);
-		us.updateUserInfo(u);
+		if(u != null) {
+			us.updateUserInfo(u);
+			res.setStatus(200);
+		} else {
+			res.setStatus(400);
+		}
 		
-		
-		res.setStatus(200);
 	}
 	
 	@Override
